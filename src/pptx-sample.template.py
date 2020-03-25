@@ -1,4 +1,5 @@
 from pptx import Presentation
+from PIL import Image
 
 def replace_text(replacements, shapes):
     """Takes dict of {match: replacement, ... } and replaces all matches.
@@ -16,8 +17,8 @@ def replace_text(replacements, shapes):
 
 if __name__ == '__main__':
 
-    prs = Presentation('assets\\input\\sample.template.lock.pptx')
-    # To get shapes in your slides
+    prs = Presentation('assets\\input\\sample.template.pptx')
+    # Replace Text
     slides = [slide for slide in prs.slides]
     shapes = []
     for slide in slides:
@@ -30,5 +31,12 @@ if __name__ == '__main__':
         '{{var3}}': 'text 3'
     }
     replace_text(replaces, shapes)
+
+    # Replace imgs
+    old_picture = img_shape = prs.slides[1].shapes[4]
+    x, y, cx, cy = old_picture.left, old_picture.top, old_picture.width, old_picture.height
+    new_picture = prs.slides[1].shapes.add_picture('assets/imgs/inu.jpg', x, y, cx, cy)
+    # old_picture.delete()
+    # image = Image.open('assets/imgs/inu.jpg', 'r')
     prs.save('assets\\output\\pptx-sample.template.output.pptx')
 
